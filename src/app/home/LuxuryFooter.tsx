@@ -98,10 +98,10 @@ export default function LuxuryFooter() {
             <div className="mb-6">
               <div className="flex items-center gap-3 mb-4">
                 <Image
-                  alt="5 Star Restaurant Logo"
+                  src="/images/logo.png"
+                  alt="5 Star Restaurant"
                   width={70}
                   height={70}
-                  src="/logo.png"
                 />
               </div>
               <p

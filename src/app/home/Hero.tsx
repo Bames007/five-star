@@ -11,7 +11,6 @@ import { Award, ChefHat, Wine } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { NextFontWithVariable } from "next/dist/compiled/@next/font";
 
 // Luxury font configurations
 const playfair = Playfair_Display({
@@ -40,6 +39,10 @@ export default function HeroPage() {
     setIsMounted(true);
   }, []);
 
+  const handleReserveTable = () => {
+    console.log("Reserve table clicked");
+  };
+
   // Prevent hydration mismatch by rendering nothing on initial server render
   if (!isMounted) {
     return (
@@ -48,17 +51,6 @@ export default function HeroPage() {
       </div>
     );
   }
-
-  const handleReserveTable = () => {
-    // You can add reservation logic here
-    console.log("Reserve table clicked");
-    // Or navigate to reservation page
-    // router.push("/reservation");
-  };
-
-  // const handleExploreMenu = () => {
-  //   router.push("/menu");
-  // };
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
@@ -69,9 +61,45 @@ export default function HeroPage() {
         <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
       </div>
 
+      {/* Header with Logo */}
+      <header className="relative z-20 w-full">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center lg:justify-start items-center py-4 lg:py-6">
+            {/* Logo */}
+            <Link href="/" className="flex items-center group">
+              <div className="relative">
+                <Image
+                  src="/images/logo.png"
+                  alt="5 Star Restaurant Logo"
+                  width={80}
+                  height={80}
+                  className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
+                  priority
+                />
+                {/* Subtle glow effect on hover */}
+                <div className="absolute inset-0 bg-gold/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+              </div>
+              {/* Logo Text - Hidden on mobile, visible on larger screens */}
+              <div className="ml-3 lg:ml-4 hidden sm:block">
+                <span
+                  className={`text-gold text-lg lg:text-xl font-bold ${playfair.className}`}
+                >
+                  5 STAR
+                </span>
+                <span
+                  className={`text-white text-sm lg:text-base block ${alexBrush.className}`}
+                >
+                  Restaurant
+                </span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </header>
+
       {/* Main Content */}
       <div
-        className={`relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-16 transition-all duration-1000 ${
+        className={`relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 transition-all duration-1000 ${
           isMounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
       >
@@ -164,22 +192,16 @@ export default function HeroPage() {
                 icon={<Award className="w-6 h-6 lg:w-8 lg:h-8" />}
                 title="Michelin Star"
                 description="Award-winning Excellence"
-                playfair={playfair}
-                cormorant={cormorant}
               />
               <FeatureCard
                 icon={<Wine className="w-6 h-6 lg:w-8 lg:h-8" />}
                 title="Fine Wines"
                 description="Premium Selection"
-                playfair={playfair}
-                cormorant={cormorant}
               />
               <FeatureCard
                 icon={<ChefHat className="w-6 h-6 lg:w-8 lg:h-8" />}
                 title="Master Chef"
                 description="Expert Craft"
-                playfair={playfair}
-                cormorant={cormorant}
               />
             </div>
           </div>
@@ -193,6 +215,7 @@ export default function HeroPage() {
                 src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
                 alt="Luxury dining at 5 Star Restaurant"
                 className="w-full h-64 sm:h-80 lg:h-[500px] object-cover transition-transform duration-700 group-hover:scale-110"
+                priority
               />
               <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/30 group-hover:opacity-50 transition-opacity duration-700"></div>
 
@@ -282,14 +305,10 @@ const FeatureCard = ({
   icon,
   title,
   description,
-  playfair,
-  cormorant,
 }: {
   icon: React.ReactNode;
   title: string;
   description: string;
-  playfair: NextFontWithVariable;
-  cormorant: NextFontWithVariable;
 }) => (
   <div className="group p-4 lg:p-6 bg-gradient-to-br from-white/5 via-white/3 to-gold/8 backdrop-blur-sm border border-white/10 rounded-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-gold/20 hover:border-gold/40 relative overflow-hidden">
     {/* Animated background gradient on hover */}
@@ -309,12 +328,12 @@ const FeatureCard = ({
       {/* Content */}
       <div className="transition-all duration-500 group-hover:translate-y-1">
         <h3
-          className={`font-bold text-white text-sm lg:text-lg mb-1 transition-all duration-500 group-hover:text-gold ${playfair.className}`}
+          className={`font-bold text-white text-sm lg:text-lg mb-1 transition-all duration-500 group-hover:text-gold font-playfair`}
         >
           {title}
         </h3>
         <p
-          className={`text-white/70 text-xs lg:text-sm font-light leading-tight transition-all duration-500 group-hover:text-white/90 ${cormorant.className}`}
+          className={`text-white/70 text-xs lg:text-sm font-light leading-tight transition-all duration-500 group-hover:text-white/90 font-cormorant`}
         >
           {description}
         </p>

@@ -248,7 +248,7 @@ function PremiumMenuPage() {
                   alt="5 Star Restaurant Logo"
                   width={70}
                   height={70}
-                  src="/logo.png"
+                  src="/images/logo.png"
                   className="object-contain"
                 />
               </Link>
