@@ -422,27 +422,32 @@ export default function ViewDrinkExperiencePage({
             </div>
 
             {/* Engagement Stats */}
-            <div className="flex items-center justify-between pt-4 border-t border-gray-700">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 text-amber-400">
-                  <Heart size={18} />
-                  <span className={`${cormorant.className}`}>
-                    {currentExperience.likes} likes
-                  </span>
+            <div className="flex flex-col gap-3 pt-4 border-t border-gray-700">
+              {/* Top row - likes and date */}
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 text-amber-400">
+                    <Heart size={16} />
+                    <span className={`text-sm ${cormorant.className}`}>
+                      {currentExperience.likes} likes
+                    </span>
+                  </div>
                 </div>
-                <div className="text-gray-400 text-sm">
-                  Shared {currentExperience.date}
+
+                <div className="text-gray-400 text-xs">
+                  {currentExperience.date}
                 </div>
               </div>
 
+              {/* Bottom row - like button */}
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => handleLike(currentExperience.id)}
-                className="bg-amber-400 text-black font-bold py-2 lg:py-3 px-4 lg:px-6 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm lg:text-base"
+                className="w-full bg-amber-400 text-black font-bold py-3 px-4 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm"
               >
                 {likedImages.has(currentExperience.id)
-                  ? "Liked"
+                  ? "Liked ✓"
                   : "Like Experience"}
               </motion.button>
             </div>
@@ -540,7 +545,7 @@ export default function ViewDrinkExperiencePage({
               href="/home/gallery/upload"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-3 bg-amber-400 text-black font-bold py-3 lg:py-4 px-6 lg:px-8 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm lg:text-base"
+              className="inline-flex items-center gap-3 bg-amber-400 text-black py-3 lg:py-4 px-6 lg:px-8 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm lg:text-base"
             >
               <Share2 size={18} />
               <span>Share Your Story</span>
@@ -563,7 +568,7 @@ export default function ViewDrinkExperiencePage({
               drinkExperiences.length;
             navigateToExperience(drinkExperiences[prevIndex].id);
           }}
-          className="flex items-center gap-2 bg-amber-400 text-black font-bold py-3 px-4 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm"
+          className="flex items-center gap-2 bg-amber-400 text-black py-3 px-4 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm"
         >
           <ChevronLeft size={18} />
           <span>Previous</span>
@@ -579,7 +584,7 @@ export default function ViewDrinkExperiencePage({
             const nextIndex = (currentIndex + 1) % drinkExperiences.length;
             navigateToExperience(drinkExperiences[nextIndex].id);
           }}
-          className="flex items-center gap-2 bg-amber-400 text-black font-bold py-3 px-4 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm"
+          className="flex items-center gap-2 bg-amber-400 text-black py-3 px-4 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm"
         >
           <span>Next</span>
           <ChevronRight size={18} />

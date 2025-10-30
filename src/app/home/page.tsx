@@ -24,11 +24,13 @@ const HomePage = () => {
       <Drinks />
       <ExperienceGallery />
       <ExperienceShowcase />
-      {/* <DoYouWantToOrder /> */}
+
       <LuxuryContact />
       <LuxuryFooter />
     </>
   );
 };
-
+{
+  /* <DoYouWantToOrder /> */
+}
 export default HomePage;

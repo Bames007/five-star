@@ -142,10 +142,6 @@ export default function ExperienceGallery() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // const scrollToTop = () => {
-  //   window.scrollTo({ top: 0, behavior: "smooth" });
-  // };
-
   const handleLike = (id: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     const newLiked = new Set(likedImages);
@@ -166,36 +162,36 @@ export default function ExperienceGallery() {
   };
 
   return (
-    <section className="min-h-screen bg-black text-white py-12 lg:py-20">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
+    <section className="w-full bg-black text-white py-8 sm:py-12 lg:py-20 overflow-x-hidden">
+      {/* Background Elements - Reduced for mobile */}
+      <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-amber-900/10 to-transparent" />
-        <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-amber-400/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-amber-600/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 right-1/4 w-40 h-40 sm:w-80 sm:h-80 bg-amber-400/5 rounded-full blur-2xl sm:blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/3 w-32 h-32 sm:w-64 sm:h-64 bg-amber-600/5 rounded-full blur-2xl sm:blur-3xl" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4">
-        {/* Header */}
+      <div className="relative z-10 container mx-auto px-3 sm:px-4">
+        {/* Header - Mobile Optimized */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-center mb-12 lg:mb-16"
+          transition={{ duration: 0.8 }}
+          className="text-center mb-8 sm:mb-12 lg:mb-16"
         >
-          <div className="flex items-center justify-center gap-2 mb-4 lg:mb-6">
-            <div className="w-8 lg:w-12 h-px bg-gradient-to-r from-transparent to-amber-500" />
-            <Sparkles className="text-amber-400" size={20} />
+          <div className="flex items-center justify-center gap-1 sm:gap-2 mb-3 sm:mb-4 lg:mb-6">
+            <div className="w-6 sm:w-8 h-px bg-gradient-to-r from-transparent to-amber-500" />
+            <Sparkles className="text-amber-400" size={16} />
             <span
-              className={`text-amber-400 text-xs lg:text-sm tracking-widest uppercase ${cormorant.className}`}
+              className={`text-amber-400 text-xs tracking-widest uppercase ${cormorant.className}`}
             >
               Customer Experiences
             </span>
-            <Sparkles className="text-amber-400" size={20} />
-            <div className="w-8 lg:w-12 h-px bg-gradient-to-r from-amber-500 to-transparent" />
+            <Sparkles className="text-amber-400" size={16} />
+            <div className="w-6 sm:w-8 h-px bg-gradient-to-r from-amber-500 to-transparent" />
           </div>
 
           <h1
-            className={`text-4xl sm:text-5xl lg:text-8xl font-bold mb-4 lg:mb-6`}
+            className={`text-2xl sm:text-4xl lg:text-8xl font-bold mb-3 sm:mb-4 lg:mb-6`}
           >
             <span
               className={`bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 bg-clip-text text-transparent ${playfair.className}`}
@@ -204,27 +200,26 @@ export default function ExperienceGallery() {
             </span>
             <br />
             <span
-              className={`text-white text-3xl sm:text-4xl lg:text-7xl ${alex_brush.className}`}
+              className={`text-white text-xl sm:text-3xl lg:text-7xl ${alex_brush.className}`}
             >
               Memories
             </span>
           </h1>
 
           <p
-            className={`text-base lg:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed px-4 ${cormorant.className}`}
+            className={`text-sm sm:text-base lg:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed px-2 ${cormorant.className}`}
           >
             Discover the unforgettable moments and exquisite dishes experienced
-            by our valued guests. Each picture tells a story of culinary
-            excellence and cherished memories.
+            by our valued guests.
           </p>
         </motion.div>
 
-        {/* Gallery Grid */}
+        {/* Gallery Grid - Mobile Optimized */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-12 lg:mb-16"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 mb-8 sm:mb-12 lg:mb-16"
         >
           {customerExperiences.map((experience, index) => (
             <motion.div
@@ -232,27 +227,28 @@ export default function ExperienceGallery() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-xl rounded-2xl lg:rounded-3xl border border-gray-700 overflow-hidden cursor-pointer active:scale-95 transition-all duration-300"
+              className="group relative bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-sm sm:backdrop-blur-xl rounded-xl sm:rounded-2xl lg:rounded-3xl border border-gray-700 overflow-hidden cursor-pointer active:scale-[0.98] transition-all duration-300"
               onClick={() => viewExperience(experience.id)}
             >
-              {/* Image */}
-              <div className="relative h-64 lg:h-80 overflow-hidden">
+              {/* Image - Mobile Optimized */}
+              <div className="relative h-48 sm:h-64 lg:h-80 overflow-hidden">
                 <Image
                   src={experience.image}
                   alt={experience.menuChoice}
                   height={400}
                   width={1200}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  priority={index < 2} // Only prioritize first 2 images
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
-                {/* Like Button */}
+                {/* Like Button - Mobile Optimized */}
                 <button
                   onClick={(e) => handleLike(experience.id, e)}
-                  className="absolute top-3 right-3 p-2 bg-black/50 rounded-full backdrop-blur-sm hover:bg-amber-400/20 transition-colors duration-300"
+                  className="absolute top-2 right-2 p-1.5 sm:p-2 bg-black/50 rounded-full backdrop-blur-sm hover:bg-amber-400/20 transition-colors duration-300"
                 >
                   <Heart
-                    size={18}
+                    size={16}
                     className={`${
                       likedImages.has(experience.id)
                         ? "text-red-500 fill-red-500"
@@ -261,57 +257,55 @@ export default function ExperienceGallery() {
                   />
                 </button>
 
-                {/* Quick Info Badges */}
-                <div className="absolute top-3 left-3 flex flex-wrap gap-2">
-                  <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full">
-                    <Clock size={12} className="text-amber-400" />
+                {/* Quick Info Badges - Mobile Optimized */}
+                <div className="absolute top-2 left-2 flex flex-wrap gap-1 sm:gap-2">
+                  <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full">
+                    <Clock size={10} className="text-amber-400" />
                     <span className="text-amber-400 text-xs">
                       {experience.duration}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full">
-                    <MapPin size={12} className="text-amber-400" />
+                  <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full">
+                    <MapPin size={10} className="text-amber-400" />
                     <span className="text-amber-400 text-xs">
-                      {experience.location}
+                      {experience.location?.split(" ")[0]}
                     </span>
                   </div>
                 </div>
 
-                {/* Rating Stars */}
-                <div className="absolute top-12 left-3">
-                  <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full">
+                {/* Rating Stars - Mobile Optimized */}
+                <div className="absolute top-10 sm:top-12 left-2">
+                  <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full">
                     <span className="text-amber-400 text-xs">
                       {getStars(experience.rating)}
                     </span>
                   </div>
                 </div>
 
-                {/* Overlay Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 lg:p-6">
+                {/* Overlay Content - Mobile Optimized */}
+                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 lg:p-6">
                   <h3
-                    className={`text-lg lg:text-xl font-bold text-white mb-2 ${playfair.className} line-clamp-2`}
+                    className={`text-sm sm:text-lg lg:text-xl font-bold text-white mb-1 sm:mb-2 ${playfair.className} line-clamp-2`}
                   >
                     {experience.menuChoice}
                   </h3>
-                  <div className="flex items-center gap-2 text-amber-400 mb-1">
-                    <User size={14} />
-                    <span
-                      className={`text-xs lg:text-sm ${cormorant.className}`}
-                    >
+                  <div className="flex items-center gap-1 sm:gap-2 text-amber-400 mb-1">
+                    <User size={12} />
+                    <span className={`text-xs ${cormorant.className}`}>
                       {experience.customerName}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 text-gray-300">
-                    <Calendar size={12} />
+                  <div className="flex items-center gap-1 sm:gap-2 text-gray-300">
+                    <Calendar size={10} />
                     <span className={`text-xs ${cormorant.className}`}>
                       {experience.date}
                     </span>
                   </div>
 
-                  {/* Engagement Stats */}
-                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-600/50">
-                    <div className="flex items-center gap-2 text-amber-400">
-                      <Heart size={14} />
+                  {/* Engagement Stats - Mobile Optimized */}
+                  <div className="flex items-center justify-between mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-600/50">
+                    <div className="flex items-center gap-1 sm:gap-2 text-amber-400">
+                      <Heart size={12} />
                       <span className={`text-xs ${cormorant.className}`}>
                         {experience.likes} likes
                       </span>
@@ -338,53 +332,61 @@ export default function ExperienceGallery() {
           ))}
         </motion.div>
 
-        {/* Quick Stats Section */}
+        {/* Quick Stats Section - Mobile Optimized */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="mb-12 lg:mb-16"
+          className="mb-8 sm:mb-12 lg:mb-16"
         >
-          <div className="bg-gradient-to-r from-amber-400/10 to-amber-600/10 border border-amber-400/30 rounded-2xl lg:rounded-3xl p-6">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+          <div className="bg-gradient-to-r from-amber-400/10 to-amber-600/10 border border-amber-400/30 rounded-xl sm:rounded-2xl lg:rounded-3xl p-4 sm:p-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center">
               <div>
                 <div
-                  className={`text-2xl lg:text-3xl font-bold text-amber-400 mb-1 ${playfair.className}`}
+                  className={`text-xl sm:text-2xl lg:text-3xl font-bold text-amber-400 mb-1 ${playfair.className}`}
                 >
                   {customerExperiences.length}+
                 </div>
-                <div className={`text-gray-300 text-sm ${cormorant.className}`}>
+                <div
+                  className={`text-gray-300 text-xs sm:text-sm ${cormorant.className}`}
+                >
                   Experiences
                 </div>
               </div>
               <div>
                 <div
-                  className={`text-2xl lg:text-3xl font-bold text-amber-400 mb-1 ${playfair.className}`}
+                  className={`text-xl sm:text-2xl lg:text-3xl font-bold text-amber-400 mb-1 ${playfair.className}`}
                 >
                   {customerExperiences.reduce((acc, exp) => acc + exp.likes, 0)}
                   +
                 </div>
-                <div className={`text-gray-300 text-sm ${cormorant.className}`}>
+                <div
+                  className={`text-gray-300 text-xs sm:text-sm ${cormorant.className}`}
+                >
                   Total Likes
                 </div>
               </div>
               <div>
                 <div
-                  className={`text-2xl lg:text-3xl font-bold text-amber-400 mb-1 ${playfair.className}`}
+                  className={`text-xl sm:text-2xl lg:text-3xl font-bold text-amber-400 mb-1 ${playfair.className}`}
                 >
                   5★
                 </div>
-                <div className={`text-gray-300 text-sm ${cormorant.className}`}>
-                  Average Rating
+                <div
+                  className={`text-gray-300 text-xs sm:text-sm ${cormorant.className}`}
+                >
+                  Avg Rating
                 </div>
               </div>
               <div>
                 <div
-                  className={`text-2xl lg:text-3xl font-bold text-amber-400 mb-1 ${playfair.className}`}
+                  className={`text-xl sm:text-2xl lg:text-3xl font-bold text-amber-400 mb-1 ${playfair.className}`}
                 >
                   100%
                 </div>
-                <div className={`text-gray-300 text-sm ${cormorant.className}`}>
+                <div
+                  className={`text-gray-300 text-xs sm:text-sm ${cormorant.className}`}
+                >
                   Satisfaction
                 </div>
               </div>
@@ -392,32 +394,32 @@ export default function ExperienceGallery() {
           </div>
         </motion.div>
 
-        {/* CTA Section */}
+        {/* CTA Section - Mobile Optimized */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-center"
         >
-          <div className="bg-gradient-to-r from-amber-400/10 to-amber-600/10 border border-amber-400/30 rounded-2xl lg:rounded-3xl p-6 lg:p-8 max-w-2xl mx-auto">
+          <div className="bg-gradient-to-r from-amber-400/10 to-amber-600/10 border border-amber-400/30 rounded-xl sm:rounded-2xl lg:rounded-3xl p-4 sm:p-6 lg:p-8 max-w-2xl mx-auto">
             <h2
-              className={`text-2xl lg:text-3xl font-bold text-amber-400 mb-3 lg:mb-4 ${playfair.className}`}
+              className={`text-lg sm:text-xl lg:text-3xl font-bold text-amber-400 mb-2 sm:mb-3 lg:mb-4 ${playfair.className}`}
             >
               Share Your Experience
             </h2>
             <p
-              className={`text-gray-300 mb-4 lg:mb-6 text-sm lg:text-base ${cormorant.className}`}
+              className={`text-gray-300 mb-3 sm:mb-4 lg:mb-6 text-xs sm:text-sm lg:text-base ${cormorant.className}`}
             >
-              Had an unforgettable dining experience with us? Share your photos
-              and story with our community.
+              Had an unforgettable dining experience? Share your photos and
+              story.
             </p>
             <motion.a
               href="home/gallery/upload"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-3 bg-amber-400 text-black font-bold py-3 lg:py-4 px-6 lg:px-8 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm lg:text-base"
+              className="inline-flex items-center gap-2 sm:gap-3 bg-amber-400 text-black font-bold py-2 sm:py-3 lg:py-4 px-4 sm:px-6 lg:px-8 rounded-lg sm:rounded-xl hover:bg-amber-300 transition-colors duration-300 text-xs sm:text-sm lg:text-base"
             >
-              <Share2 size={18} />
+              <Share2 size={16} />
               <span>Share Your Experience</span>
             </motion.a>
           </div>

@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { use } from "react"; // Import the use hook
+import { use } from "react";
 import { motion } from "framer-motion";
 import {
   Sparkles,
@@ -174,14 +174,29 @@ export default function ViewExperiencePage({
     const newLiked = new Set(likedImages);
     if (newLiked.has(id)) {
       newLiked.delete(id);
+      // Update likes count
+      if (currentExperience && currentExperience.id === id) {
+        setCurrentExperience({
+          ...currentExperience,
+          likes: Math.max(0, currentExperience.likes - 1),
+        });
+      }
     } else {
       newLiked.add(id);
+      // Update likes count
+      if (currentExperience && currentExperience.id === id) {
+        setCurrentExperience({
+          ...currentExperience,
+          likes: currentExperience.likes + 1,
+        });
+      }
     }
     setLikedImages(newLiked);
   };
 
+  // FIXED: Use absolute path for navigation
   const navigateToExperience = (id: string) => {
-    router.push(`${id}`);
+    router.push(`/home/gallery/view_experience/${id}`);
   };
 
   const getStars = (rating: number = 5) => {
@@ -213,7 +228,7 @@ export default function ViewExperiencePage({
             Experience Not Found
           </h2>
           <Link
-            href="home/gallery"
+            href="/home/gallery" // FIXED: Use absolute path
             className="text-white hover:text-amber-400 transition-colors"
           >
             Return to Gallery
@@ -224,9 +239,10 @@ export default function ViewExperiencePage({
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
+    // FIXED: Added overflow-x-hidden to prevent horizontal scrolling
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+      {/* Background Elements - FIXED: Added overflow-hidden */}
+      <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-amber-900/10 to-transparent" />
         <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-amber-400/5 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-amber-600/5 rounded-full blur-3xl" />
@@ -238,9 +254,10 @@ export default function ViewExperiencePage({
         animate={{ opacity: 1, y: 0 }}
         className="relative z-20 p-4 lg:p-6"
       >
-        <div className="container mx-auto">
+        {/* FIXED: Added max-w-full to container */}
+        <div className="container mx-auto max-w-full px-4">
           <Link
-            href="home/gallery"
+            href="/home/gallery" // FIXED: Use absolute path
             className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors duration-300 group"
           >
             <ArrowLeft
@@ -252,7 +269,8 @@ export default function ViewExperiencePage({
         </div>
       </motion.header>
 
-      <div className="relative z-10 container mx-auto px-4 pb-20">
+      {/* FIXED: Added max-w-full and proper padding */}
+      <div className="relative z-10 container mx-auto max-w-full px-4 pb-20">
         {/* Main Experience */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -260,15 +278,18 @@ export default function ViewExperiencePage({
           transition={{ duration: 0.8 }}
           className="mb-12 lg:mb-16"
         >
-          {/* Hero Image */}
-          <div className="relative rounded-2xl lg:rounded-3xl overflow-hidden mb-6 lg:mb-8">
-            <Image
-              height={1200}
-              width={800}
-              src={currentExperience.image}
-              alt={currentExperience.menuChoice}
-              className="w-full h-64 lg:h-96 object-cover"
-            />
+          {/* Hero Image - FIXED: Added max-w-full and proper sizing */}
+          <div className="relative rounded-2xl lg:rounded-3xl overflow-hidden mb-6 lg:mb-8 max-w-full mx-auto">
+            <div className="relative w-full h-64 lg:h-96">
+              <Image
+                src={currentExperience.image}
+                alt={currentExperience.menuChoice}
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+              />
+            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
             {/* Action Buttons */}
@@ -310,27 +331,27 @@ export default function ViewExperiencePage({
             </div>
           </div>
 
-          {/* Experience Details */}
-          <div className="bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-xl rounded-2xl lg:rounded-3xl border border-gray-700 p-6 lg:p-8">
-            {/* Meta Information */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6 lg:mb-8">
+          {/* Experience Details - FIXED: Added max-w-full */}
+          <div className="bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-xl rounded-2xl lg:rounded-3xl border border-gray-700 p-4 lg:p-8 max-w-full mx-auto">
+            {/* Meta Information - FIXED: Improved grid for mobile */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8">
               <div className="text-center p-3 bg-black/50 rounded-xl border border-gray-700">
                 <Calendar className="text-amber-400 mx-auto mb-2" size={20} />
-                <div className="text-white font-semibold text-sm">
+                <div className="text-white font-semibold text-sm whitespace-nowrap">
                   {currentExperience.date}
                 </div>
                 <div className="text-gray-400 text-xs">Date</div>
               </div>
               <div className="text-center p-3 bg-black/50 rounded-xl border border-gray-700">
                 <Clock className="text-amber-400 mx-auto mb-2" size={20} />
-                <div className="text-white font-semibold text-sm">
+                <div className="text-white font-semibold text-sm whitespace-nowrap">
                   {currentExperience.duration}
                 </div>
                 <div className="text-gray-400 text-xs">Duration</div>
               </div>
               <div className="text-center p-3 bg-black/50 rounded-xl border border-gray-700">
                 <MapPin className="text-amber-400 mx-auto mb-2" size={20} />
-                <div className="text-white font-semibold text-sm">
+                <div className="text-white font-semibold text-sm whitespace-nowrap overflow-hidden text-ellipsis">
                   {currentExperience.location}
                 </div>
                 <div className="text-gray-400 text-xs">Location</div>
@@ -358,28 +379,39 @@ export default function ViewExperiencePage({
               </p>
             </div>
 
-            {/* Engagement Stats */}
-            <div className="flex items-center justify-between pt-6 border-t border-gray-700">
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-2 text-amber-400">
-                  <Heart size={20} />
-                  <span className={`${cormorant.className}`}>
-                    {currentExperience.likes} likes
-                  </span>
+            {/* Engagement Stats - OPTIMIZED FOR MOBILE */}
+            <div className="flex flex-col gap-3 pt-6 border-t border-gray-700">
+              {/* Top row - likes and date */}
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 text-amber-400">
+                    <Heart size={18} />
+                    <span className={`text-sm ${cormorant.className}`}>
+                      {currentExperience.likes} likes
+                    </span>
+                  </div>
                 </div>
-                <div className="text-gray-400 text-sm">
+
+                <div className="text-gray-400 text-xs hidden sm:block">
                   Shared {currentExperience.date}
                 </div>
               </div>
 
+              {/* Bottom row - like button */}
               <motion.button
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleLike(currentExperience.id)}
-                className="bg-amber-400 text-black font-bold py-2 lg:py-3 px-4 lg:px-6 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm lg:text-base"
+                className="w-full bg-amber-400 text-black font-bold py-3 px-4 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm flex items-center justify-center gap-2"
               >
+                <Heart
+                  size={16}
+                  className={
+                    likedImages.has(currentExperience.id) ? "fill-current" : ""
+                  }
+                />
                 {likedImages.has(currentExperience.id)
-                  ? "Liked"
+                  ? "Liked ✓"
                   : "Like Experience"}
               </motion.button>
             </div>
@@ -393,22 +425,22 @@ export default function ViewExperiencePage({
           transition={{ duration: 0.8, delay: 0.4 }}
           className="mb-12 lg:mb-16"
         >
-          <div className="flex items-center justify-between mb-6 lg:mb-8">
+          <div className="flex items-center justify-between mb-6 lg:mb-8 px-0">
             <h2
               className={`text-2xl lg:text-3xl font-bold text-amber-400 ${playfair.className}`}
             >
               More Experiences
             </h2>
             <Link
-              href="home/gallery"
+              href="/home/gallery" // FIXED: Use absolute path
               className="text-amber-400 hover:text-amber-300 transition-colors duration-300 text-sm lg:text-base"
             >
               View All
             </Link>
           </div>
 
-          {/* Related Experiences Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+          {/* Related Experiences Grid - FIXED: Removed extra padding/margins */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mx-0">
             {relatedExperiences.map((experience, index) => (
               <motion.div
                 key={experience.id}
@@ -418,14 +450,14 @@ export default function ViewExperiencePage({
                 className="group relative bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-xl rounded-2xl border border-gray-700 overflow-hidden cursor-pointer active:scale-95 transition-all duration-300"
                 onClick={() => navigateToExperience(experience.id)}
               >
-                {/* Image */}
+                {/* Image - FIXED: Improved image container */}
                 <div className="relative h-48 lg:h-56 overflow-hidden">
                   <Image
-                    height={1200}
-                    width={800}
                     src={experience.image}
                     alt={experience.menuChoice}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
@@ -435,7 +467,7 @@ export default function ViewExperiencePage({
                       e.stopPropagation();
                       handleLike(experience.id);
                     }}
-                    className="absolute top-3 right-3 p-2 bg-black/50 rounded-full backdrop-blur-sm hover:bg-amber-400/20 transition-colors duration-300"
+                    className="absolute top-3 right-3 p-2 bg-black/50 rounded-full backdrop-blur-sm hover:bg-amber-400/20 transition-colors duration-300 z-10"
                   >
                     <Heart
                       size={16}
@@ -448,7 +480,7 @@ export default function ViewExperiencePage({
                   </button>
 
                   {/* Quick Info */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
                     <h3
                       className={`text-lg font-bold text-white mb-2 line-clamp-2 ${playfair.className}`}
                     >
@@ -469,7 +501,7 @@ export default function ViewExperiencePage({
                 </div>
 
                 {/* Hover Overlay - Desktop Only */}
-                <div className="hidden lg:flex absolute inset-0 bg-amber-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 items-center justify-center">
+                <div className="hidden lg:flex absolute inset-0 bg-amber-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 items-center justify-center z-20">
                   <div className="text-center">
                     <Sparkles
                       className="text-amber-400 mx-auto mb-2"
@@ -487,14 +519,14 @@ export default function ViewExperiencePage({
           </div>
         </motion.section>
 
-        {/* Call to Action */}
+        {/* Call to Action - FIXED: Improved padding */}
         <motion.section
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-center"
+          className="text-center px-0"
         >
-          <div className="bg-gradient-to-r from-amber-400/10 to-amber-600/10 border border-amber-400/30 rounded-2xl lg:rounded-3xl p-6 lg:p-8 max-w-2xl mx-auto">
+          <div className="bg-gradient-to-r from-amber-400/10 to-amber-600/10 border border-amber-400/30 rounded-2xl lg:rounded-3xl p-6 lg:p-8 max-w-full mx-auto">
             <h2
               className={`text-2xl lg:text-3xl font-bold text-amber-400 mb-3 lg:mb-4 ${playfair.className}`}
             >
@@ -507,7 +539,7 @@ export default function ViewExperiencePage({
               and story with our community.
             </p>
             <motion.a
-              href="home/gallery/upload"
+              href="/home/gallery/upload" // FIXED: Use absolute path
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="inline-flex items-center gap-3 bg-amber-400 text-black font-bold py-3 lg:py-4 px-6 lg:px-8 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm lg:text-base"
@@ -519,8 +551,8 @@ export default function ViewExperiencePage({
         </motion.section>
       </div>
 
-      {/* Mobile Navigation Arrows for Quick Browsing */}
-      <div className="lg:hidden fixed bottom-6 left-4 right-4 flex justify-between z-30">
+      {/* Mobile Navigation Arrows for Quick Browsing - FIXED: Improved positioning */}
+      <div className="lg:hidden fixed bottom-6 left-4 right-4 flex justify-between z-30 max-w-full px-4">
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -533,7 +565,7 @@ export default function ViewExperiencePage({
               customerExperiences.length;
             navigateToExperience(customerExperiences[prevIndex].id);
           }}
-          className="flex items-center gap-2 bg-amber-400 text-black font-bold py-3 px-4 rounded-xl hover:bg-amber-300 transition-colors duration-300"
+          className="flex items-center gap-2 bg-amber-400 text-black py-3 px-4 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm flex-1 mr-2 justify-center"
         >
           <ChevronLeft size={20} />
           <span className="text-sm">Previous</span>
@@ -549,7 +581,7 @@ export default function ViewExperiencePage({
             const nextIndex = (currentIndex + 1) % customerExperiences.length;
             navigateToExperience(customerExperiences[nextIndex].id);
           }}
-          className="flex items-center gap-2 bg-amber-400 text-black font-bold py-3 px-4 rounded-xl hover:bg-amber-300 transition-colors duration-300"
+          className="flex items-center gap-2 bg-amber-400 text-black py-3 px-4 rounded-xl hover:bg-amber-300 transition-colors duration-300 text-sm flex-1 ml-2 justify-center"
         >
           <span className="text-sm">Next</span>
           <ChevronRight size={20} />

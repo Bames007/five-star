@@ -96,9 +96,12 @@ export default function DrinkVideoParallax() {
       <style jsx>{`
         .luxury-video-section {
           position: relative;
-          height: 100vh;
+          min-height: 100vh;
+          height: auto;
           width: 100%;
           overflow: hidden;
+          display: flex;
+          align-items: center;
         }
 
         .video-background {
@@ -115,7 +118,8 @@ export default function DrinkVideoParallax() {
           top: 50%;
           left: 50%;
           width: 100vw;
-          height: 115vh; /* Extra height to prevent cropping during resize */
+          height: 100vh;
+          min-height: 100%;
           transform: translate(-50%, -50%);
           pointer-events: none;
           object-fit: cover;
@@ -129,9 +133,9 @@ export default function DrinkVideoParallax() {
           height: 100%;
           background: linear-gradient(
             135deg,
-            rgba(0, 0, 0, 0.6) 0%,
-            rgba(0, 0, 0, 0.4) 50%,
-            rgba(0, 0, 0, 0.6) 100%
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.5) 50%,
+            rgba(0, 0, 0, 0.7) 100%
           );
           z-index: 2;
         }
@@ -139,33 +143,39 @@ export default function DrinkVideoParallax() {
         .video-content {
           position: relative;
           z-index: 3;
-          height: 100%;
+          width: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
           text-align: center;
           color: #fefefe;
-          padding: 2rem;
+          padding: 1rem;
+          min-height: 100vh;
         }
 
         .content-wrapper {
           max-width: 800px;
           width: 100%;
+          padding: 2rem 1rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
         .premium-badge {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 1rem;
-          margin-bottom: 2rem;
+          gap: 0.5rem;
+          margin-bottom: 1.5rem;
+          flex-wrap: wrap;
         }
 
         .badge-text {
           color: #dda629;
-          font-size: 0.8rem;
+          font-size: 0.7rem;
           font-weight: 500;
-          letter-spacing: 3px;
+          letter-spacing: 2px;
           text-transform: uppercase;
           white-space: nowrap;
         }
@@ -178,20 +188,22 @@ export default function DrinkVideoParallax() {
           height: 1px;
           background: linear-gradient(90deg, #dda629, transparent);
           flex: 1;
-          max-width: 60px;
+          min-width: 30px;
+          max-width: 40px;
         }
 
         .title-group {
-          margin-bottom: 1.5rem;
+          margin-bottom: 1rem;
+          width: 100%;
         }
 
         .main-title {
-          font-size: 4rem;
+          font-size: 2.5rem;
           font-weight: 700;
           color: #fefefe;
-          margin: 0 0 1rem 0;
+          margin: 0 0 0.8rem 0;
           line-height: 1.1;
-          letter-spacing: 1px;
+          letter-spacing: 0.5px;
           text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
@@ -199,27 +211,27 @@ export default function DrinkVideoParallax() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 0.8rem;
+          gap: 0.5rem;
         }
 
         .underline-gold {
           height: 2px;
           background: #dda629;
-          width: 80px;
+          width: 50px;
           border-radius: 1px;
         }
 
         .underline-dot {
-          width: 6px;
-          height: 6px;
+          width: 4px;
+          height: 4px;
           background: #dda629;
           border-radius: 50%;
         }
 
         .subtitle {
-          font-size: 1.8rem;
+          font-size: 1.3rem;
           color: #dda629;
-          margin: 0 0 1.5rem 0;
+          margin: 0 0 1rem 0;
           font-weight: 600;
           line-height: 1.3;
           font-style: italic;
@@ -227,12 +239,12 @@ export default function DrinkVideoParallax() {
         }
 
         .description {
-          font-size: 1.2rem;
-          line-height: 1.6;
+          font-size: 1rem;
+          line-height: 1.5;
           color: rgba(254, 254, 254, 0.9);
-          margin: 0 auto 2.5rem;
+          margin: 0 auto 1.5rem;
           font-weight: 300;
-          max-width: 600px;
+          max-width: 90%;
           text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
         }
 
@@ -240,21 +252,25 @@ export default function DrinkVideoParallax() {
         .drink-features {
           display: flex;
           justify-content: center;
-          gap: 2rem;
-          margin-bottom: 2.5rem;
+          gap: 0.8rem;
+          margin-bottom: 2rem;
+          flex-wrap: wrap;
+          width: 100%;
+          max-width: 300px;
         }
 
         .feature-item {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 0.5rem;
-          padding: 1rem;
+          gap: 0.4rem;
+          padding: 0.8rem;
           background: rgba(221, 166, 41, 0.1);
           border: 1px solid rgba(221, 166, 41, 0.3);
-          border-radius: 12px;
+          border-radius: 8px;
           transition: all 0.3s ease;
-          min-width: 120px;
+          min-width: 90px;
+          flex: 1;
         }
 
         .feature-item:hover {
@@ -269,28 +285,33 @@ export default function DrinkVideoParallax() {
 
         .feature-item span {
           color: #fefefe;
-          font-size: 0.9rem;
+          font-size: 0.8rem;
           font-weight: 500;
+          text-align: center;
         }
 
         .cta-group {
           display: flex;
-          gap: 1.2rem;
+          gap: 1rem;
           justify-content: center;
           flex-wrap: wrap;
+          width: 100%;
+          max-width: 300px;
         }
 
         .cta-btn {
-          padding: 1.1rem 2.2rem;
+          padding: 0.9rem 1.5rem;
           border: none;
-          border-radius: 8px;
-          font-size: 1rem;
+          border-radius: 6px;
+          font-size: 0.9rem;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.3s ease;
           position: relative;
           overflow: hidden;
           letter-spacing: 0.5px;
+          width: 100%;
+          max-width: 250px;
         }
 
         .cta-btn.primary {
@@ -308,7 +329,7 @@ export default function DrinkVideoParallax() {
           background: transparent;
           color: #fefefe;
           border: 2px solid rgba(254, 254, 254, 0.4);
-          border-radius: 8px;
+          border-radius: 6px;
         }
 
         .cta-btn.secondary:hover {
@@ -318,64 +339,105 @@ export default function DrinkVideoParallax() {
           background: rgba(221, 166, 41, 0.1);
         }
 
-        @media (max-width: 768px) {
+        /* Tablet */
+        @media (min-width: 768px) {
+          .video-content {
+            padding: 2rem;
+          }
+
+          .content-wrapper {
+            padding: 3rem 2rem;
+          }
+
           .main-title {
-            font-size: 2.5rem;
+            font-size: 3.5rem;
           }
 
           .subtitle {
-            font-size: 1.3rem;
+            font-size: 1.6rem;
           }
 
           .description {
-            font-size: 1rem;
+            font-size: 1.1rem;
+            max-width: 600px;
           }
 
           .premium-badge {
-            flex-direction: column;
-            gap: 0.5rem;
+            gap: 1rem;
+            margin-bottom: 2rem;
           }
 
           .badge-text {
-            font-size: 0.7rem;
-            letter-spacing: 2px;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+          }
+
+          .badge-line {
+            max-width: 60px;
           }
 
           .drink-features {
-            flex-direction: column;
-            gap: 1rem;
-            align-items: center;
+            gap: 1.5rem;
+            max-width: 400px;
+            margin-bottom: 2.5rem;
           }
 
           .feature-item {
-            flex-direction: row;
-            justify-content: center;
-            min-width: 200px;
+            min-width: 110px;
+            padding: 1rem;
           }
 
           .cta-group {
-            flex-direction: column;
-            align-items: center;
+            flex-direction: row;
+            max-width: 500px;
           }
 
           .cta-btn {
-            width: 100%;
-            max-width: 250px;
+            width: auto;
+            padding: 1rem 2rem;
           }
         }
 
-        /* Extra small devices */
-        @media (max-width: 480px) {
+        /* Desktop */
+        @media (min-width: 1024px) {
           .main-title {
-            font-size: 2rem;
+            font-size: 4rem;
           }
 
           .subtitle {
-            font-size: 1.1rem;
+            font-size: 1.8rem;
           }
 
+          .description {
+            font-size: 1.2rem;
+          }
+
+          .drink-features {
+            max-width: 500px;
+          }
+
+          .feature-item {
+            min-width: 120px;
+          }
+
+          .cta-btn {
+            padding: 1.1rem 2.2rem;
+          }
+        }
+
+        /* Large Desktop */
+        @media (min-width: 1440px) {
+          .content-wrapper {
+            padding: 4rem 2rem;
+          }
+        }
+
+        /* Safe area support for notches */
+        @supports (padding: max(0px)) {
           .video-content {
-            padding: 1rem;
+            padding-left: max(1rem, env(safe-area-inset-left));
+            padding-right: max(1rem, env(safe-area-inset-right));
+            padding-bottom: max(1rem, env(safe-area-inset-bottom));
           }
         }
       `}</style>
