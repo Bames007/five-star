@@ -31,11 +31,6 @@ const cormorant = Cormorant_Garamond({
   weight: ["300", "400", "600", "700"],
 });
 
-const alex_brush = Alex_Brush({
-  subsets: ["latin"],
-  weight: ["400"],
-});
-
 interface Message {
   id: string;
   text: string;
@@ -797,7 +792,7 @@ export default function LuxuryChatBot() {
                       <h3
                         className={`text-white font-bold ${playfair.className}`}
                       >
-                        Maître d'AI
+                        Maître d&apos;AI
                       </h3>
                       <p
                         className={`text-amber-400 text-xs ${cormorant.className}`}
