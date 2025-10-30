@@ -33,7 +33,6 @@ const cormorant = Cormorant_Garamond({
 
 export default function HeroPage() {
   const [isMounted, setIsMounted] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);

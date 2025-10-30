@@ -14,7 +14,6 @@ import {
   TrendingUp,
   User,
   Clock,
-  Home,
 } from "lucide-react";
 import {
   Playfair_Display,

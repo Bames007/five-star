@@ -12,11 +12,7 @@ import {
   Clock,
   User,
 } from "lucide-react";
-import {
-  Playfair_Display,
-  Cormorant_Garamond,
-  Alex_Brush,
-} from "next/font/google";
+import { Playfair_Display, Cormorant_Garamond } from "next/font/google";
 import Image from "next/image";
 import { mainCourse, MenuItem } from "../menu/food";
 import { drinks, Drink } from "../menu/drinks";
@@ -31,6 +27,19 @@ const cormorant = Cormorant_Garamond({
   weight: ["300", "400", "600", "700"],
 });
 
+// Define proper types for comparison data
+interface SideComparisonData {
+  dish: MenuItem;
+  sides: Array<{ name: string; price: number }>;
+}
+
+interface PairingComparisonData {
+  dish: MenuItem;
+  pairings: Drink[];
+}
+
+type ComparisonData = SideComparisonData | PairingComparisonData;
+
 interface Message {
   id: string;
   text: string;
@@ -43,7 +52,7 @@ interface Message {
     | "menu_item"
     | "drink_item"
     | "comparison";
-  data?: MenuItem | Drink | any;
+  data?: MenuItem | Drink | ComparisonData;
 }
 
 interface UserSession {
@@ -330,6 +339,7 @@ export default function LuxuryChatBot() {
 
       if (dishMatch) {
         const sides = getCompatibleSides(dishMatch);
+        const comparisonData: SideComparisonData = { dish: dishMatch, sides };
         response = [
           {
             id: generateMessageId(),
@@ -337,7 +347,7 @@ export default function LuxuryChatBot() {
             sender: "bot",
             timestamp: new Date(),
             type: "comparison",
-            data: { dish: dishMatch, sides },
+            data: comparisonData,
           },
         ];
       } else {
@@ -369,6 +379,10 @@ export default function LuxuryChatBot() {
 
       if (dishMatch) {
         const pairings = findPerfectPairings(dishMatch);
+        const comparisonData: PairingComparisonData = {
+          dish: dishMatch,
+          pairings,
+        };
         response = [
           {
             id: generateMessageId(),
@@ -376,7 +390,7 @@ export default function LuxuryChatBot() {
             sender: "bot",
             timestamp: new Date(),
             type: "comparison",
-            data: { dish: dishMatch, pairings },
+            data: comparisonData,
           },
         ];
       } else {
@@ -678,8 +692,21 @@ export default function LuxuryChatBot() {
     </div>
   );
 
-  const renderComparison = (data: any) => {
-    if (data.sides) {
+  // Type guard functions
+  const isSideComparison = (
+    data: ComparisonData
+  ): data is SideComparisonData => {
+    return "sides" in data;
+  };
+
+  const isPairingComparison = (
+    data: ComparisonData
+  ): data is PairingComparisonData => {
+    return "pairings" in data;
+  };
+
+  const renderComparison = (data: ComparisonData) => {
+    if (isSideComparison(data)) {
       return (
         <div className="bg-black/50 rounded-xl p-4 border border-amber-400/20">
           <h4
@@ -688,7 +715,7 @@ export default function LuxuryChatBot() {
             Perfect sides for {data.dish.title}
           </h4>
           <div className="space-y-2">
-            {data.sides.map((side: any, idx: number) => (
+            {data.sides.map((side, idx: number) => (
               <div
                 key={`${data.dish.id}-side-${idx}`}
                 className="flex justify-between items-center p-2 bg-gray-800/50 rounded-lg"
@@ -704,7 +731,7 @@ export default function LuxuryChatBot() {
       );
     }
 
-    if (data.pairings) {
+    if (isPairingComparison(data)) {
       return (
         <div className="bg-black/50 rounded-xl p-4 border border-amber-400/20">
           <h4
@@ -837,11 +864,11 @@ export default function LuxuryChatBot() {
                       }`}
                     >
                       {message.type === "menu_item" && message.data ? (
-                        renderMenuItem(message.data)
+                        renderMenuItem(message.data as MenuItem)
                       ) : message.type === "drink_item" && message.data ? (
-                        renderDrinkItem(message.data)
+                        renderDrinkItem(message.data as Drink)
                       ) : message.type === "comparison" && message.data ? (
-                        renderComparison(message.data)
+                        renderComparison(message.data as ComparisonData)
                       ) : (
                         // Regular text message
                         <p

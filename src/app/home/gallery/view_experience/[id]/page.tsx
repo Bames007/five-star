@@ -17,11 +17,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import {
-  Playfair_Display,
-  Cormorant_Garamond,
-  Alex_Brush,
-} from "next/font/google";
+import { Playfair_Display, Cormorant_Garamond } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -34,11 +30,6 @@ const playfair = Playfair_Display({
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "600", "700"],
-});
-
-const alex_brush = Alex_Brush({
-  subsets: ["latin"],
-  weight: ["400"],
 });
 
 interface CustomerExperience {
