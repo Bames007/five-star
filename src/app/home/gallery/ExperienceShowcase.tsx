@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Sparkles,
   Heart,
@@ -19,6 +19,7 @@ import {
   Alex_Brush,
 } from "next/font/google";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -54,7 +55,7 @@ interface DrinkExperience {
 
 export default function DrinksGallery() {
   const [likedImages, setLikedImages] = useState<Set<string>>(new Set());
-  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [, setShowScrollTop] = useState(false);
   const router = useRouter();
 
   // Luxury drinks experiences data
@@ -178,9 +179,9 @@ export default function DrinksGallery() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  // const scrollToTop = () => {
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  // };
 
   const handleLike = (id: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
@@ -197,9 +198,9 @@ export default function DrinksGallery() {
     router.push(`home/gallery/view_drinks_experience/${id}`);
   };
 
-  const getStars = (rating: number) => {
-    return "★".repeat(rating) + "☆".repeat(5 - rating);
-  };
+  // const getStars = (rating: number) => {
+  //   return "★".repeat(rating) + "☆".repeat(5 - rating);
+  // };
 
   return (
     <section className="min-h-screen bg-black text-white py-4 lg:py-12">
@@ -225,7 +226,7 @@ export default function DrinksGallery() {
             <span
               className={`text-amber-400 text-xs lg:text-lg tracking-widest uppercase ${cormorant.className}`}
             >
-              Connoisseur's Collection
+              Connoisseur&apos;s Collection
             </span>
             <Sparkles className="text-amber-400" size={20} />
             <div className="w-8 lg:w-16 h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
@@ -274,7 +275,9 @@ export default function DrinksGallery() {
             >
               {/* Image Container */}
               <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
-                <img
+                <Image
+                  height={800}
+                  width={800}
                   src={experience.image}
                   alt={experience.drinkName}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"

@@ -169,12 +169,11 @@ function CardStack({ items, onCardSelect }: CardStackProps) {
       {/* Cards Stack */}
       <div className="relative w-full h-full">
         {getVisibleCards().map(({ ...item }) => {
-          const position = (item as any).position;
+          const typedItem = item as typeof item & { position: number };
+          const position = typedItem.position;
           const isActive = position === 0;
           const isPrevious = position === -1;
-          const isNext = position === 1;
           const offsets = getCardOffsets();
-
           return (
             <motion.div
               key={`${item.id}-${currentIndex}-${position}`}

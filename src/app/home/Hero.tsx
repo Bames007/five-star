@@ -10,6 +10,8 @@ import {
 import { Award, ChefHat, Wine } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import { NextFontWithVariable } from "next/dist/compiled/@next/font";
 
 // Luxury font configurations
 const playfair = Playfair_Display({
@@ -54,9 +56,9 @@ export default function HeroPage() {
     // router.push("/reservation");
   };
 
-  const handleExploreMenu = () => {
-    router.push("/menu");
-  };
+  // const handleExploreMenu = () => {
+  //   router.push("/menu");
+  // };
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
@@ -185,7 +187,9 @@ export default function HeroPage() {
           {/* Right Column - Image with Enhanced Hover Effects */}
           <div className="relative order-1 lg:order-2">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer">
-              <img
+              <Image
+                height={1200}
+                width={1200}
                 src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
                 alt="Luxury dining at 5 Star Restaurant"
                 className="w-full h-64 sm:h-80 lg:h-[500px] object-cover transition-transform duration-700 group-hover:scale-110"
@@ -284,8 +288,8 @@ const FeatureCard = ({
   icon: React.ReactNode;
   title: string;
   description: string;
-  playfair: any;
-  cormorant: any;
+  playfair: NextFontWithVariable;
+  cormorant: NextFontWithVariable;
 }) => (
   <div className="group p-4 lg:p-6 bg-gradient-to-br from-white/5 via-white/3 to-gold/8 backdrop-blur-sm border border-white/10 rounded-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-gold/20 hover:border-gold/40 relative overflow-hidden">
     {/* Animated background gradient on hover */}

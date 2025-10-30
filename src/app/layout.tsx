@@ -84,7 +84,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${bebasNeue.variable} ${poppins.variable} ${playfair.variable} antialiased`}
+        className={`${bebasNeue.variable} ${poppins.variable}  ${gantari.variable}  ${geistMono.variable}  ${geistSans.variable} ${playfair.variable} antialiased`}
       >
         {/* Background gradient */}
         <div className="fixed inset-0 bg-gradient-to-br from-amber-50 via-white to-amber-50/50 -z-10" />

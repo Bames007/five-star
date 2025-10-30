@@ -146,7 +146,7 @@ export default function FoodDetail() {
             >
               <h3 className="text-[#DDA629] text-2xl font-bold mb-3 flex items-center space-x-2">
                 <ChefHat size={24} />
-                <span>Chef's Note</span>
+                <span>Chef&apos;s Note</span>
               </h3>
               <p className="text-gray-300">{food.fun_fact}</p>
             </motion.div>
@@ -319,7 +319,7 @@ export default function FoodDetail() {
                 <div className="flex justify-between items-center">
                   <span className="text-gray-300">Difficulty</span>
                   <span className="text-[#DDA629] font-bold">
-                    Chef's Special
+                    Chef&apos;s Special
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
@@ -338,7 +338,7 @@ export default function FoodDetail() {
             >
               <h3 className="text-2xl font-bold text-white mb-3 flex items-center space-x-2">
                 <Award size={24} />
-                <span>Chef's Signature</span>
+                <span>Chef&apos;s Signature</span>
               </h3>
               <p className="text-gray-300 text-sm leading-relaxed">
                 This dish is prepared with utmost care and attention to detail

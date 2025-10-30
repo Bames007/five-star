@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { use } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Sparkles,
   Heart,
@@ -20,6 +20,7 @@ import {
 import { Playfair_Display, Cormorant_Garamond } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -285,7 +286,9 @@ export default function ViewDrinkExperiencePage({
         >
           {/* Hero Image */}
           <div className="relative rounded-xl lg:rounded-3xl overflow-hidden mb-4 lg:mb-6">
-            <img
+            <Image
+              height={1200}
+              width={800}
               src={currentExperience.image}
               alt={currentExperience.drinkName}
               className="w-full h-48 lg:h-96 object-cover"
@@ -480,7 +483,9 @@ export default function ViewDrinkExperiencePage({
               >
                 {/* Image */}
                 <div className="relative h-40 lg:h-48 overflow-hidden">
-                  <img
+                  <Image
+                    height={1200}
+                    width={800}
                     src={experience.image}
                     alt={experience.drinkName}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"

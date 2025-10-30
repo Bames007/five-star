@@ -8,19 +8,10 @@ import {
   Phone,
   Mail,
   Clock,
-  Instagram,
-  Facebook,
-  Twitter,
-  Youtube,
-  Crown,
   Sparkles,
   ChevronRight,
 } from "lucide-react";
-import {
-  Playfair_Display,
-  Cormorant_Garamond,
-  Alex_Brush,
-} from "next/font/google";
+import { Playfair_Display, Cormorant_Garamond } from "next/font/google";
 import Image from "next/image";
 
 const playfair = Playfair_Display({
@@ -132,7 +123,7 @@ export default function LuxuryFooter() {
               <div className="flex items-center gap-2 text-amber-400">
                 <Sparkles size={16} />
                 <span className={`text-sm ${cormorant.className}`}>
-                  World's 50 Best Restaurants
+                  World&apos;s 50 Best Restaurants
                 </span>
               </div>
             </div>
@@ -284,7 +275,7 @@ export default function LuxuryFooter() {
               </h4>
               <div className="flex gap-4">
                 {socialLinks.map((social) => {
-                  const Icon = social.icon;
+                  // const Icon = social.icon;
                   return (
                     <motion.a
                       key={social.name}

@@ -8,7 +8,6 @@ import ExperienceShowcase from "./gallery/ExperienceShowcase";
 import LuxuryFooter from "./LuxuryFooter";
 import LuxuryContact from "./LuxuryContact";
 import ExperienceGallery from "./gallery/ExperienceGallery";
-import DoYouWantToOrder from "./order/DoYouWantToOrder";
 
 const HomePage = () => {
   return (

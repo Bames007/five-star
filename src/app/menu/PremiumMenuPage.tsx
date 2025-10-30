@@ -2,15 +2,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { mainCourse } from "./food";
-import { drinks } from "./drinks";
+import { mainCourse, MenuItem } from "./food";
+import { drinks, Drink } from "./drinks";
 import {
   ShoppingCart,
   Plus,
   Minus,
-  X,
   Search,
-  Filter,
   Wine,
   Utensils,
   Sparkles,
@@ -23,12 +21,9 @@ import {
   User,
   Mail,
   Lock,
-  Heart,
-  Share2,
   Eye,
   EyeOff,
   Target,
-  Timer,
   Award,
   ChefHat,
   Leaf,
@@ -48,39 +43,87 @@ const fontClasses = {
   cormorant: "font-cormorant",
 };
 
+// Cart item type
+interface CartItem {
+  id: string;
+  image: string;
+  price: number;
+  quantity: number;
+  type: "food" | "drinks";
+  displayName: string;
+  excerpt?: string;
+  description?: string;
+}
+
+// Props interfaces
+interface MenuItemCardProps {
+  item: MenuItem | Drink;
+  type: "food" | "drinks";
+  onAddToCart: (item: MenuItem | Drink) => void;
+  onViewDetails: () => void;
+}
+
+interface ItemDetailPageProps {
+  item: MenuItem | Drink;
+  type: "food" | "drinks";
+  onBack: () => void;
+  onAddToCart: (item: MenuItem | Drink) => void;
+}
+
+interface MembershipPageProps {
+  onBack: () => void;
+}
+
+interface WaitingPageProps {
+  onBack: () => void;
+}
+
 function PremiumMenuPage() {
   const [activeTab, setActiveTab] = useState<"food" | "drinks">("food");
-  const [cart, setCart] = useState<any[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartExpanded, setIsCartExpanded] = useState(false);
   const [tableNumber, setTableNumber] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<"default" | "price" | "name">("default");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [showMembership, setShowMembership] = useState(false);
-  const [showItemDetail, setShowItemDetail] = useState<any>(null);
+  const [showItemDetail, setShowItemDetail] = useState<MenuItem | Drink | null>(
+    null
+  );
   const [showWaitingPage, setShowWaitingPage] = useState(false);
 
-  // Fixed filter and sort function
+  // Type guard functions
+  const isMenuItem = (item: MenuItem | Drink): item is MenuItem => {
+    return "title" in item;
+  };
+
+  const isDrink = (item: MenuItem | Drink): item is Drink => {
+    return "name" in item;
+  };
+
+  // Fixed filter and sort function with proper typing
   const filteredItems = (activeTab === "food" ? mainCourse : drinks)
-    .filter((item: any) => {
-      const itemName = activeTab === "food" ? item.title : item.name;
-      const itemDescription = item.excerpt || item.description;
+    .filter((item: MenuItem | Drink) => {
+      const itemName = isMenuItem(item) ? item.title : item.name;
+      const itemDescription =
+        item.excerpt || (isDrink(item) ? item.description : "");
 
       const matchesSearch =
         itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        itemDescription.toLowerCase().includes(searchTerm.toLowerCase());
+        (itemDescription &&
+          itemDescription.toLowerCase().includes(searchTerm.toLowerCase()));
 
       const matchesCategory =
         selectedCategory === "all" ||
         (activeTab === "food"
-          ? item.subcategory === selectedCategory
-          : item.category === selectedCategory);
+          ? (item as MenuItem).subcategory === selectedCategory
+          : (item as Drink).category === selectedCategory);
 
       return matchesSearch && matchesCategory;
     })
-    .sort((a: any, b: any) => {
-      const aName = activeTab === "food" ? a.title : a.name;
-      const bName = activeTab === "food" ? b.title : b.name;
+    .sort((a: MenuItem | Drink, b: MenuItem | Drink) => {
+      const aName = isMenuItem(a) ? a.title : a.name;
+      const bName = isMenuItem(b) ? b.title : b.name;
 
       switch (sortBy) {
         case "price":
@@ -116,7 +159,7 @@ function PremiumMenuPage() {
     ],
   };
 
-  const addToCart = (item: any) => {
+  const addToCart = (item: MenuItem | Drink) => {
     setCart((prev) => {
       const existing = prev.find((cartItem) => cartItem.id === item.id);
       if (existing) {
@@ -132,8 +175,8 @@ function PremiumMenuPage() {
           ...item,
           quantity: 1,
           type: activeTab,
-          displayName: activeTab === "food" ? item.title : item.name,
-        },
+          displayName: isMenuItem(item) ? item.title : item.name,
+        } as CartItem,
       ];
     });
   };
@@ -206,6 +249,7 @@ function PremiumMenuPage() {
                   width={70}
                   height={70}
                   src="/logo.png"
+                  className="object-contain"
                 />
               </Link>
             </div>
@@ -295,7 +339,9 @@ function PremiumMenuPage() {
                       className="flex items-center justify-between p-2 bg-gray-800/50 rounded-lg"
                     >
                       <div className="flex items-center space-x-3 flex-1">
-                        <img
+                        <Image
+                          height={1200}
+                          width={800}
                           src={item.image}
                           alt={item.displayName}
                           className="w-12 h-12 object-cover rounded-lg"
@@ -453,7 +499,9 @@ function PremiumMenuPage() {
                 {/* Sort */}
                 <select
                   value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
+                  onChange={(e) =>
+                    setSortBy(e.target.value as "default" | "price" | "name")
+                  }
                   className="px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-gold transition-colors"
                 >
                   <option value="default">Sort by</option>
@@ -466,7 +514,7 @@ function PremiumMenuPage() {
 
           {/* Menu Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredItems.map((item: any) => (
+            {filteredItems.map((item: MenuItem | Drink) => (
               <MenuItemCard
                 key={item.id}
                 item={item}
@@ -554,11 +602,16 @@ function PremiumMenuPage() {
 }
 
 // Menu Item Card Component
-function MenuItemCard({ item, type, onAddToCart, onViewDetails }: any) {
+function MenuItemCard({
+  item,
+  type,
+  onAddToCart,
+  onViewDetails,
+}: MenuItemCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   const getCategoryIcon = (category: string) => {
-    const icons: any = {
+    const icons: Record<string, React.ComponentType<{ className?: string }>> = {
       Steak: Beef,
       Seafood: Fish,
       Vegetarian: Leaf,
@@ -576,8 +629,17 @@ function MenuItemCard({ item, type, onAddToCart, onViewDetails }: any) {
     return <IconComponent className="w-4 h-4" />;
   };
 
-  const itemName = type === "food" ? item.title : item.name;
-  const itemCategory = type === "food" ? item.subcategory : item.category;
+  // Type guard functions
+  const isMenuItem = (item: MenuItem | Drink): item is MenuItem => {
+    return "title" in item;
+  };
+
+  const isDrink = (item: MenuItem | Drink): item is Drink => {
+    return "name" in item;
+  };
+
+  const itemName = isMenuItem(item) ? item.title : item.name;
+  const itemCategory = isMenuItem(item) ? item.subcategory : item.category;
 
   return (
     <div
@@ -587,7 +649,9 @@ function MenuItemCard({ item, type, onAddToCart, onViewDetails }: any) {
     >
       {/* Image Container */}
       <div className="relative h-48 overflow-hidden">
-        <img
+        <Image
+          height={1200}
+          width={800}
           src={item.image}
           alt={itemName}
           className={`w-full h-full object-cover transition-transform duration-700 ${
@@ -655,7 +719,7 @@ function MenuItemCard({ item, type, onAddToCart, onViewDetails }: any) {
         <p
           className={`font-cormorant text-gray-300 text-sm mb-4 leading-relaxed`}
         >
-          {item.excerpt || item.description}
+          {item.excerpt || (isDrink(item) ? item.description : "")}
         </p>
 
         {/* Details */}
@@ -666,13 +730,13 @@ function MenuItemCard({ item, type, onAddToCart, onViewDetails }: any) {
                 <div className="flex items-center space-x-1">
                   <Clock className="w-4 h-4" />
                   <span className="font-cormorant">
-                    {item.preparation_time}m
+                    {(item as MenuItem).preparation_time}m
                   </span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Leaf className="w-4 h-4" />
                   <span className="font-cormorant">
-                    {item.dietary_restrictions[0]}
+                    {(item as MenuItem).dietary_restrictions[0]}
                   </span>
                 </div>
               </>
@@ -681,13 +745,13 @@ function MenuItemCard({ item, type, onAddToCart, onViewDetails }: any) {
                 <div className="flex items-center space-x-1">
                   <Wine className="w-4 h-4" />
                   <span className="font-cormorant">
-                    {item.alcohol_content}%
+                    {(item as Drink).alcohol_content}%
                   </span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Award className="w-4 h-4" />
                   <span className="font-cormorant">
-                    {item.country_of_origin}
+                    {(item as Drink).country_of_origin}
                   </span>
                 </div>
               </>
@@ -708,9 +772,27 @@ function MenuItemCard({ item, type, onAddToCart, onViewDetails }: any) {
 }
 
 // Item Detail Page Component
-function ItemDetailPage({ item, type, onBack, onAddToCart }: any) {
-  const itemName = type === "food" ? item.title : item.name;
-  const itemDescription = type === "food" ? item.content : item.description;
+function ItemDetailPage({
+  item,
+  type,
+  onBack,
+  onAddToCart,
+}: ItemDetailPageProps) {
+  // Type guard functions
+  const isMenuItem = (item: MenuItem | Drink): item is MenuItem => {
+    return "title" in item;
+  };
+
+  const isDrink = (item: MenuItem | Drink): item is Drink => {
+    return "name" in item;
+  };
+
+  const itemName = isMenuItem(item) ? item.title : item.name;
+  const itemDescription = isMenuItem(item)
+    ? item.content
+    : isDrink(item)
+    ? item.description
+    : "";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
@@ -741,7 +823,9 @@ function ItemDetailPage({ item, type, onBack, onAddToCart }: any) {
           {/* Image Gallery */}
           <div className="mb-8">
             <div className="rounded-2xl overflow-hidden border border-gray-700">
-              <img
+              <Image
+                height={1200}
+                width={800}
                 src={item.image}
                 alt={itemName}
                 className="w-full h-96 object-cover"
@@ -760,7 +844,7 @@ function ItemDetailPage({ item, type, onBack, onAddToCart }: any) {
                       {itemName}
                     </h1>
                     <p className={`font-cormorant text-gray-300 text-lg`}>
-                      {item.excerpt || item.description}
+                      {item.excerpt || (isDrink(item) ? item.description : "")}
                     </p>
                   </div>
                   <div className="text-right">
@@ -784,12 +868,14 @@ function ItemDetailPage({ item, type, onBack, onAddToCart }: any) {
                       <div className="flex items-center space-x-2">
                         <Clock className="w-5 h-5 text-gold" />
                         <span className="font-cormorant">
-                          {item.preparation_time} minutes
+                          {(item as MenuItem).preparation_time} minutes
                         </span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <ChefHat className="w-5 h-5 text-gold" />
-                        <span className="font-cormorant">Chef's Special</span>
+                        <span className="font-cormorant">
+                          Chef&apos;s Special
+                        </span>
                       </div>
                     </>
                   ) : (
@@ -797,13 +883,13 @@ function ItemDetailPage({ item, type, onBack, onAddToCart }: any) {
                       <div className="flex items-center space-x-2">
                         <Wine className="w-5 h-5 text-gold" />
                         <span className="font-cormorant">
-                          {item.alcohol_content}% ABV
+                          {(item as Drink).alcohol_content}% ABV
                         </span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Award className="w-5 h-5 text-gold" />
                         <span className="font-cormorant">
-                          {item.country_of_origin}
+                          {(item as Drink).country_of_origin}
                         </span>
                       </div>
                     </>
@@ -823,11 +909,11 @@ function ItemDetailPage({ item, type, onBack, onAddToCart }: any) {
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {(type === "food"
-                      ? item.ingredients
-                      : Object.values(item.tasting_notes).flat()
+                      ? (item as MenuItem).ingredients
+                      : Object.values((item as Drink).tasting_notes).flat()
                     )
                       .slice(0, 8)
-                      .map((ingredient: any, index: number) => (
+                      .map((ingredient: string, index: number) => (
                         <span
                           key={index}
                           className="bg-gray-700/50 px-3 py-1 rounded-full text-sm border border-gray-600"
@@ -846,7 +932,7 @@ function ItemDetailPage({ item, type, onBack, onAddToCart }: any) {
                         Allergies
                       </h4>
                       <div className="flex flex-wrap gap-1">
-                        {item.allergies.map(
+                        {(item as MenuItem).allergies.map(
                           (allergy: string, index: number) => (
                             <span
                               key={index}
@@ -863,7 +949,7 @@ function ItemDetailPage({ item, type, onBack, onAddToCart }: any) {
                         Dietary
                       </h4>
                       <div className="flex flex-wrap gap-1">
-                        {item.dietary_restrictions.map(
+                        {(item as MenuItem).dietary_restrictions.map(
                           (restriction: string, index: number) => (
                             <span
                               key={index}
@@ -889,22 +975,29 @@ function ItemDetailPage({ item, type, onBack, onAddToCart }: any) {
                 </h3>
                 <div className="space-y-4">
                   {(type === "food"
-                    ? item.recommended_drinks
-                    : item.food_pairings
-                  ).map((pairing: any, index: number) => (
-                    <div
-                      key={index}
-                      className="flex items-center space-x-3 p-3 bg-gray-700/30 rounded-lg border border-gray-600/50"
-                    >
-                      <Wine className="w-8 h-8 text-gold" />
-                      <div className="flex-1">
-                        <h4 className={`font-cormorant font-semibold`}>
-                          {pairing.name}
-                        </h4>
-                        <p className="text-gray-400 text-sm">{pairing.type}</p>
+                    ? (item as MenuItem).recommended_drinks
+                    : (item as Drink).food_pairings
+                  ).map(
+                    (
+                      pairing: { name: string; type: string },
+                      index: number
+                    ) => (
+                      <div
+                        key={index}
+                        className="flex items-center space-x-3 p-3 bg-gray-700/30 rounded-lg border border-gray-600/50"
+                      >
+                        <Wine className="w-8 h-8 text-gold" />
+                        <div className="flex-1">
+                          <h4 className={`font-cormorant font-semibold`}>
+                            {pairing.name}
+                          </h4>
+                          <p className="text-gray-400 text-sm">
+                            {pairing.type}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               </div>
 
@@ -931,7 +1024,7 @@ function ItemDetailPage({ item, type, onBack, onAddToCart }: any) {
 }
 
 // Membership Page Component
-function MembershipPage({ onBack }: any) {
+function MembershipPage({ onBack }: MembershipPageProps) {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -1148,7 +1241,7 @@ function MembershipPage({ onBack }: any) {
 }
 
 // Waiting Page Component
-function WaitingPage({ onBack }: any) {
+function WaitingPage({ onBack }: WaitingPageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -1192,7 +1285,7 @@ function WaitingPage({ onBack }: any) {
   );
 }
 
-// Game Component (Separated as requested)
+// Game Component
 function GameComponent() {
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);

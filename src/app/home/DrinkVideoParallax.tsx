@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Playfair_Display, Cormorant_Garamond } from "next/font/google";
 import { Wine, Beer, Sparkles } from "lucide-react";
 
@@ -15,7 +15,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export default function DrinkVideoParallax() {
-  const [isClient, setIsClient] = useState(false);
+  const [, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);

@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { Playfair_Display, Cormorant_Garamond } from "next/font/google";
+import Image from "next/image";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -171,7 +172,9 @@ export default function UploadExperience() {
 
               {previewUrl ? (
                 <div className="relative">
-                  <img
+                  <Image
+                    width={800}
+                    height={800}
                     src={previewUrl}
                     alt="Preview"
                     className="w-full h-64 object-cover rounded-2xl border-2 border-amber-400/30"

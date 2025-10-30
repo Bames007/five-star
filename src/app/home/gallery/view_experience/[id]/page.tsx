@@ -24,6 +24,7 @@ import {
 } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -261,7 +262,9 @@ export default function ViewExperiencePage({
         >
           {/* Hero Image */}
           <div className="relative rounded-2xl lg:rounded-3xl overflow-hidden mb-6 lg:mb-8">
-            <img
+            <Image
+              height={1200}
+              width={800}
               src={currentExperience.image}
               alt={currentExperience.menuChoice}
               className="w-full h-64 lg:h-96 object-cover"
@@ -417,7 +420,9 @@ export default function ViewExperiencePage({
               >
                 {/* Image */}
                 <div className="relative h-48 lg:h-56 overflow-hidden">
-                  <img
+                  <Image
+                    height={1200}
+                    width={800}
                     src={experience.image}
                     alt={experience.menuChoice}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"

@@ -421,7 +421,7 @@ export default function LuxuryContact() {
                 </h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {socialLinks.map((social) => {
-                    const Icon = social.icon;
+                    // const Icon = social.icon;
                     return (
                       <motion.a
                         key={social.name}

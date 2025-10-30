@@ -18,6 +18,7 @@ import {
   Alex_Brush,
 } from "next/font/google";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -50,7 +51,7 @@ interface CustomerExperience {
 
 export default function ExperienceGallery() {
   const [likedImages, setLikedImages] = useState<Set<string>>(new Set());
-  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [, setShowScrollTop] = useState(false);
   const router = useRouter();
 
   // Sample customer experiences data
@@ -141,9 +142,9 @@ export default function ExperienceGallery() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  // const scrollToTop = () => {
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  // };
 
   const handleLike = (id: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
@@ -236,9 +237,11 @@ export default function ExperienceGallery() {
             >
               {/* Image */}
               <div className="relative h-64 lg:h-80 overflow-hidden">
-                <img
+                <Image
                   src={experience.image}
                   alt={experience.menuChoice}
+                  height={400}
+                  width={1200}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
