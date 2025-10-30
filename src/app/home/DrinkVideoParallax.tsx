@@ -15,28 +15,48 @@ const cormorant = Cormorant_Garamond({
 });
 
 export default function DrinkVideoParallax() {
-  const [, setIsClient] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
+    // Set a small delay to ensure CSS is loaded
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
+  const handleVideoLoad = () => {
+    setVideoLoaded(true);
+  };
+
   return (
-    <div className="luxury-video-section">
+    <div className={`luxury-video-section ${isLoaded ? "loaded" : "loading"}`}>
+      {/* Loading State */}
+      {!isLoaded && (
+        <div className="loading-overlay">
+          <div className="loading-spinner">
+            <Sparkles className="spinner-icon" size={32} />
+          </div>
+        </div>
+      )}
+
       {/* YouTube Video Background */}
       <div className="video-background">
         <iframe
           src="https://www.youtube.com/embed/Tza4xFLph1Y?autoplay=1&mute=1&loop=1&playlist=Tza4xFLph1Y&controls=0&modestbranding=1&rel=0&playsinline=1"
-          className="youtube-iframe"
+          className={`youtube-iframe ${videoLoaded ? "loaded" : ""}`}
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
+          onLoad={handleVideoLoad}
         />
         <div className="video-overlay"></div>
       </div>
 
       {/* Content */}
-      <div className="video-content">
+      <div className={`video-content ${isLoaded ? "loaded" : ""}`}>
         <div className="content-wrapper">
           <div className="premium-badge">
             <div className="badge-line"></div>
@@ -102,6 +122,57 @@ export default function DrinkVideoParallax() {
           overflow: hidden;
           display: flex;
           align-items: center;
+          opacity: 0;
+          transition: opacity 0.5s ease-in-out;
+        }
+
+        .luxury-video-section.loaded {
+          opacity: 1;
+        }
+
+        .luxury-video-section.loading {
+          opacity: 0;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: #000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 100;
+          transition: opacity 0.5s ease-in-out;
+        }
+
+        .luxury-video-section.loaded .loading-overlay {
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        .loading-spinner {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .spinner-icon {
+          color: #dda629;
+          animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
 
         .video-background {
@@ -123,6 +194,12 @@ export default function DrinkVideoParallax() {
           transform: translate(-50%, -50%);
           pointer-events: none;
           object-fit: cover;
+          opacity: 0;
+          transition: opacity 1s ease-in-out;
+        }
+
+        .youtube-iframe.loaded {
+          opacity: 1;
         }
 
         .video-overlay {
@@ -151,6 +228,14 @@ export default function DrinkVideoParallax() {
           color: #fefefe;
           padding: 1rem;
           min-height: 100vh;
+          opacity: 0;
+          transform: translateY(20px);
+          transition: all 0.8s ease-in-out 0.3s;
+        }
+
+        .video-content.loaded {
+          opacity: 1;
+          transform: translateY(0);
         }
 
         .content-wrapper {

@@ -8,6 +8,7 @@ import ExperienceShowcase from "./gallery/ExperienceShowcase";
 import LuxuryFooter from "./LuxuryFooter";
 import LuxuryContact from "./LuxuryContact";
 import ExperienceGallery from "./gallery/ExperienceGallery";
+import LuxuryChatBot from "../chat_bot/page";
 
 const HomePage = () => {
   return (
@@ -24,7 +25,7 @@ const HomePage = () => {
       <Drinks />
       <ExperienceGallery />
       <ExperienceShowcase />
-
+      <LuxuryChatBot />
       <LuxuryContact />
       <LuxuryFooter />
     </>
